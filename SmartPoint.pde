@@ -11,21 +11,19 @@
 
 class SmartPoint{
     
-  //PVector position;
-  
   int maxValue;
   int closestValue;
   
-  PVector lastLocation;
-  PVector currentLocation;
+  PVector currentLocation; //closest point current location
+  PVector lastLocation; //sp last position
+  PVector oldLocation; //sp old location
   
   SmartPoint(){
-  
-    //position = new PVector(0, 0);
     
     maxValue = 1000;
     lastLocation = new PVector(0, 0);
     currentLocation = new PVector(0, 0);
+    oldLocation = new PVector(0, 0);
   
   }
   void display(){
@@ -34,12 +32,41 @@ class SmartPoint{
     //ellipse(position.x, position.y, 20, 20);
     ellipse(lastLocation.x, lastLocation.y, 30, 30);
   }
+    void distance(){
+   
+   stroke(0, 255, 0);
+   strokeWeight(3);
+   line(oldLocation.x, oldLocation.y, lastLocation.x, lastLocation.y);
+   
+   float distance = dist(oldLocation.x, oldLocation.y, lastLocation.x, lastLocation.y);
+   //println(distance);
+   
+   if(distance > 60){
+     
+     //println(distance);
+     String str="";
+     
+     if(oldLocation.x > lastLocation.x + 30) {
+     
+       //println("left");
+       str = "direction left " + distance;
+       
+       
+       
+     } else if (oldLocation.x < lastLocation.x + 30){
+       
+       //println("right");
+       str = "direction right " + distance;
+     }
+     monTexte.update(str);
+   }
+   
+  }
   void update(){
     
-    //position.x = mouseX;
-    //position.y = mouseY;
-    
     closestValue = maxValue;
+    oldLocation.x = lastLocation.x;
+    oldLocation.y = lastLocation.y;
     
     int[] depthValues = openni.depthMap();
     int mapWidth = openni.depthWidth();
@@ -58,9 +85,7 @@ class SmartPoint{
     }
     
     lastLocation.x = (lastLocation.x + currentLocation.x) / 2;
-    lastLocation.y = (lastLocation.y + currentLocation.y) / 2;
-    println(lastLocation.x+ " "+ lastLocation.y);
-    
+    lastLocation.y = (lastLocation.y + currentLocation.y) / 2;    
   }  
   boolean hitTarget(Btn btn){
     

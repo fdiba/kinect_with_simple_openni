@@ -91,6 +91,7 @@ void draw(){
   
   image(myMovie, 640-200, 480-160);
   
+  sp.distance();
   sp.display();
   
   if(sp.hitTarget(btn1)){
